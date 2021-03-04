@@ -1,6 +1,7 @@
 #include <vector>
 #include <string>
 #include <filesystem>
+#include <cmath>
 
 #include "algo/branch_and_reduce_algorithm.h"
 #include "algo/timer.h"
@@ -45,7 +46,7 @@ void setParams(int argc)
     branch_and_reduce_algorithm::BRANCHING = branching_strat;
     branch_and_reduce_algorithm::TUNING_PARAM1 = tuningParam1;
     branch_and_reduce_algorithm::TUNING_PARAM2 = tuningParam2;
-    branch_and_reduce_algorithm::TUNING_PARAM3 = tuningParam3;   
+    branch_and_reduce_algorithm::TUNING_PARAM3 = tuningParam3;
 }
 
 int main(int argc, char **argv)
@@ -63,26 +64,26 @@ int main(int argc, char **argv)
     if (argc > 5)
         tuningParam2 = atof(argv[5]);
     if (argc > 6)
-        tuningParam3 = atoi(argv[6]); 
+        tuningParam3 = atoi(argv[6]);
 
     setParams(argc);
 
 
-    out_path += "/resuts_" + to_string(branching_strat) + "_" 
-                          + to_string(tuningParam1) + "_" 
-                          + to_string(tuningParam2) + "_" 
+    out_path += "/resuts_" + to_string(branching_strat) + "_"
+                          + to_string(tuningParam1) + "_"
+                          + to_string(tuningParam2) + "_"
                           + to_string(tuningParam3) + ".txt";
 
     #ifdef USE_IFC
     std::cout << "HIER" << endl;
     #endif
-    
+
     for (const auto &entry : std::filesystem::directory_iterator(instances_path))
     {
         if (!entry.is_directory())
         {
             std::vector<std::vector<int>> adj = readGraphFromFile(entry.path());
-             
+
             branch_and_reduce_algorithm::resetStatistics();
             branch_and_reduce_algorithm algo = branch_and_reduce_algorithm(adj, adj.size());
             timer t;
